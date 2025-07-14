@@ -1,0 +1,133 @@
+body {
+  font-family: 'Tahoma', sans-serif;
+  margin: 0;
+  background-color: #e8f5f2;
+  color: #333333;
+  min-height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.container {
+  max-width: 650px;
+  width: 100%;
+  background: #ffffff;
+  padding: 25px;
+  border-radius: 12px;
+  box-shadow: 0 0 20px rgba(0,0,0,0.1);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+}
+
+h1 {
+  color: #0d3b66;
+  margin-bottom: 20px;
+}
+
+.section {
+  width: 100%;
+  max-width: 500px;
+  margin-bottom: 20px;
+}
+
+.section label {
+  font-weight: bold;
+  display: block;
+  margin-bottom: 8px;
+  color: #0d3b66;
+  text-align: right;
+}
+
+.section input[type="text"],
+.section input[type="number"],
+.section select,
+.section textarea {
+  width: 100%;
+  padding: 10px;
+  border: 1px solid #cccccc;
+  border-radius: 6px;
+  font-size: 15px;
+}
+
+.section input[type="text"]:focus,
+.section input[type="number"]:focus,
+.section select:focus,
+.section textarea:focus {
+  border-color: #0d3b66;
+  outline: none;
+}
+
+.radio-group label {
+  display: inline-block;
+  margin-right: 15px;
+  cursor: pointer;
+  color: #0d3b66;
+}
+
+.radio-group input[type="radio"] {
+  margin-left: 5px;
+}
+
+.price-box {
+  background: #d1eee3;
+  color: #0d3b66;
+  padding: 10px;
+  font-weight: bold;
+  text-align: center;
+  border-radius: 6px;
+  font-size: 16px;
+}
+
+.button-group {
+  display: flex;
+  justify-content: center;
+  gap: 20px;
+}
+
+.button-group button {
+  padding: 12px;
+  width: 200px;
+  background-color: #0d3b66;
+  color: #ffffff;
+  border: none;
+  border-radius: 6px;
+  font-weight: bold;
+  font-size: 16px;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+.button-group button:hover {
+  background-color: #092b4a;
+}
+
+.popup {
+  display: none;
+  position: fixed;
+  top: 0;
+  right: 0;
+  left: 0;
+  bottom: 0;
+  background: rgba(0,0,0,0.6);
+  justify-content: center;
+  align-items: center;
+  z-index: 9999;
+}
+
+.popup-content {
+  background: #ffffff;
+  padding: 25px;
+  border-radius: 12px;
+  text-align: center;
+  color: #0d3b66;
+  box-shadow: 0 0 20px rgba(0,0,0,0.2);
+}
+
+#qrCanvas {
+  margin-top: 15px;
+  border: 1px solid #ccc;
+  padding: 10px;
+}

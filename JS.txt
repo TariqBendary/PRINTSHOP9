@@ -1,0 +1,239 @@
+document.getElementById('langBtn').addEventListener('click', () => {
+  const html = document.documentElement;
+  const isArabic = html.lang === 'ar';
+
+  html.lang = isArabic ? 'en' : 'ar';
+  html.dir = isArabic ? 'ltr' : 'rtl';
+
+  document.querySelectorAll('[data-lang-ar]').forEach(el => {
+    el.textContent = isArabic ? el.dataset.langEn : el.dataset.langAr;
+  });
+
+  document.querySelectorAll('[data-placeholder-ar]').forEach(el => {
+    el.placeholder = isArabic ? el.dataset.placeholderEn : el.dataset.placeholderAr;
+  });
+});
+
+document.getElementById('paperType').addEventListener('change', function () {
+  const customInput = document.getElementById('customPaper');
+  customInput.style.display = this.value === 'custom' ? 'block' : 'none';
+});
+
+document.getElementById('unsubscribeBtn').addEventListener('click', () => {
+  if (confirm('هل تريد إلغاء الطلب؟')) window.close();
+});
+
+// ملاحظات إضافية
+document.querySelectorAll('input[name="extraNote"]').forEach(el => {
+  el.addEventListener('change', function () {
+    const container = document.getElementById('extraNotesTextareaContainer');
+    const notesField = document.getElementById('notes');
+
+    if (this.value === 'ملاحظات أخرى') {
+      container.style.display = 'block';
+      notesField.value = '';
+    } else {
+      container.style.display = 'none';
+      notesField.value = this.value;
+    }
+  });
+});
+
+document.getElementById('sendBtn').addEventListener('click', async () => {
+  const printType = document.querySelector('input[name="printType"]:checked')?.value || '';
+  const copies = document.getElementById('copies').value;
+  const pages = document.getElementById('pages').value;
+  const delivery = document.getElementById('delivery').value;
+
+  const selectedNote = document.querySelector('input[name="extraNote"]:checked');
+  let notes = selectedNote ? selectedNote.value : '';
+
+  if (notes === 'ملاحظات أخرى') {
+    notes = document.getElementById('notes').value;
+  }
+
+  const paperType = document.getElementById('paperType').value === 'custom'
+    ? document.getElementById('customPaper').value
+    : document.getElementById('paperType').value;
+
+  const printPrice = document.getElementById('printPriceBox').textContent;
+  const deliveryPrice = document.getElementById('deliveryPriceBox').textContent;
+  const total = document.getElementById('totalPriceBox').textContent;
+
+  const address = document.getElementById('delivery').value.trim();
+  let distance = null;
+  let fee = 0;
+
+  if (address) {
+    distance = await getDistanceFromAddress(address);
+    if (distance !== null) {
+      fee = calculateDeliveryFee(distance);
+    }
+  }
+
+  const now = new Date();
+  const dateString = `${now.getFullYear()}/${String(now.getMonth() + 1).padStart(2, "0")}/${String(now.getDate()).padStart(2, "0")}`;
+  const timeString = `${String(now.getHours()).padStart(2, "0")}:${String(now.getMinutes()).padStart(2, "0")}`;
+
+  const orderNumber = Math.floor(Math.random() * 900000) + 100000;
+
+  let message = `🖨️ برنت شوب - طلب طباعة\n\n`;
+  message += `📅 وقت الطلب: ${dateString} ${timeString}\n`;
+  message += `🔢 رقم الطلب: #${orderNumber}\n\n`;
+  message += `📝 نوع الطباعة: ${printType}\n`;
+  message += `📄 عدد النسخ: ${copies}\n`;
+  message += `📄 عدد الأوراق: ${pages}\n`;
+  message += `🗒️ نوع الورق: ${paperType}\n`;
+  message += `📍 عنوان التوصيل: ${delivery}\n`;
+
+  if (distance !== null) {
+    message += `🚗 المسافة إلى العنوان: ${distance.toFixed(1)} كم\n`;
+    message += `💰 رسوم التوصيل: ${fee.toFixed(3)} د.ك\n`;
+  }
+
+  if (notes) message += `🗂️ ملاحظات: ${notes}\n\n`;
+
+  message += `💸 سعر الطباعة: ${printPrice}\n`;
+  message += `💸 سعر التوصيل: ${deliveryPrice}\n`;
+  message += `💵 الإجمالي: ${total}`;
+
+  const whatsappUrl = `https://wa.me/96590010901?text=${encodeURIComponent(message)}`;
+  window.open(whatsappUrl, '_blank');
+
+  generateQRCode(whatsappUrl);
+  showQRCodeSection();
+
+  showPopup();
+});
+
+function showPopup() {
+  const popup = document.getElementById('popup');
+  popup.style.display = 'flex';
+}
+
+document.getElementById('popupClose').addEventListener('click', () => {
+  document.getElementById('popup').style.display = 'none';
+});
+
+function calculatePrintPrice(printType, copies, pages) {
+  let rate = printType === "ملون" ? 50 : 25;
+  return (copies * pages * rate) / 1000;
+}
+
+const origin = { lat: 29.308770, lon: 47.940330 };
+
+async function getDistanceFromAddress(address) {
+  const res = await fetch(`https://nominatim.openstreetmap.org/search?format=json&q=${encodeURIComponent(address)}`);
+  const data = await res.json();
+
+  if (!data.length) return null;
+
+  const dest = {
+    lat: parseFloat(data[0].lat),
+    lon: parseFloat(data[0].lon)
+  };
+
+  return haversineDistance(origin.lat, origin.lon, dest.lat, dest.lon);
+}
+
+function deg2rad(deg) {
+  return deg * (Math.PI / 180);
+}
+
+function haversineDistance(lat1, lon1, lat2, lon2) {
+  const R = 6371;
+  const dLat = deg2rad(lat2 - lat1);
+  const dLon = deg2rad(lon2 - lon1);
+  const a = Math.sin(dLat / 2) * Math.sin(dLat / 2) +
+            Math.cos(deg2rad(lat1)) * Math.cos(deg2rad(lat2)) *
+            Math.sin(dLon / 2) * Math.sin(dLon / 2);
+  const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+  return R * c;
+}
+
+function calculateDeliveryFee(distance) {
+  if (distance <= 10) return 2;
+  if (distance <= 25) return 2.5;
+  return 5;
+}
+
+async function updateDeliveryEstimation() {
+  const address = document.getElementById('delivery').value.trim();
+  const resultBox = document.getElementById('distanceResult');
+  const estimatedBox = document.getElementById('estimatedDeliveryBox');
+
+  if (!address) {
+    resultBox.style.display = 'none';
+    estimatedBox.textContent = "-";
+    document.getElementById('deliveryPriceBox').textContent = `0 د.ك`;
+    updateTotalPrice();
+    return;
+  }
+
+  resultBox.textContent = "جاري حساب المسافة...";
+  resultBox.style.display = 'block';
+
+  const distance = await getDistanceFromAddress(address);
+  if (distance === null) {
+    resultBox.textContent = "تعذر تحديد الموقع. يرجى التحقق من العنوان.";
+    estimatedBox.textContent = "-";
+    document.getElementById('deliveryPriceBox').textContent = `0 د.ك`;
+    updateTotalPrice();
+    return;
+  }
+
+  const fee = calculateDeliveryFee(distance);
+
+  resultBox.textContent = `المسافة إلى العنوان: ${distance.toFixed(1)} كم — رسوم التوصيل: ${fee.toFixed(3)} د.ك`;
+  estimatedBox.textContent = `${fee.toFixed(3)} د.ك`;
+  document.getElementById('deliveryPriceBox').textContent = `${fee.toFixed(3)} د.ك`;
+
+  updateTotalPrice();
+}
+
+function updateTotalPrice() {
+  const printPriceText = document.getElementById('printPriceBox').textContent.replace(" د.ك", "") || "0";
+  const deliveryPriceText = document.getElementById('deliveryPriceBox').textContent.replace(" د.ك", "") || "0";
+
+  const printPrice = parseFloat(printPriceText) || 0;
+  const deliveryPrice = parseFloat(deliveryPriceText) || 0;
+
+  const total = printPrice + deliveryPrice;
+  document.getElementById('totalPriceBox').textContent = `${total.toFixed(3)} د.ك`;
+}
+
+function updatePrices() {
+  const printType = document.querySelector('input[name="printType"]:checked')?.value;
+  const copies = Number(document.getElementById('copies').value);
+  const pages = Number(document.getElementById('pages').value);
+
+  const printPrice = (printType && copies && pages) ? calculatePrintPrice(printType, copies, pages) : 0;
+  document.getElementById('printPriceBox').textContent = `${printPrice.toFixed(3)} د.ك`;
+
+  updateTotalPrice();
+}
+
+['copies', 'pages'].forEach(id => {
+  document.getElementById(id).addEventListener('input', updatePrices);
+});
+document.querySelectorAll('input[name="printType"]').forEach(el => {
+  el.addEventListener('change', updatePrices);
+});
+
+document.getElementById('delivery').addEventListener('blur', () => {
+  updateDeliveryEstimation();
+});
+
+// وظائف QR Code
+function generateQRCode(url) {
+  const qr = new QRious({
+    element: document.getElementById('qrCanvas'),
+    value: url,
+    size: 200,
+    level: 'H',
+  });
+}
+
+function showQRCodeSection() {
+  document.getElementById('qrSection').style.display = 'block';
+}
