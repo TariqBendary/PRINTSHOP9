@@ -1,151 +1,278 @@
 <!DOCTYPE html>
 <html lang="ar" dir="rtl">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>برنت شوب</title>
-  <link rel="stylesheet" href="style.css" />
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/qrious/4.0.2/qrious.min.js"></script>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>برنت شوب - Print Shop</title>
+    <meta name="description" content="خدمة طباعة احترافية مع التوصيل - Professional printing service with delivery">
+    <link rel="stylesheet" href="style.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Almarai:wght@300;400;700;800&display=swap" rel="stylesheet">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcode/1.5.3/qrcode.min.js"></script>
 </head>
 <body>
-  <div class="container">
-    <button id="langBtn" class="lang-btn" data-lang-ar="English" data-lang-en="العربية">English</button>
-    <h1 data-lang-ar="برنت شوب" data-lang-en="Print Shop">برنت شوب</h1>
+    <div class="container">
+        <!-- Language Toggle Button -->
+        <button id="langBtn" class="lang-btn">
+            <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M5 8l6 6M4 14l6-6 2-3M2 5h12M7 2h1l8 10-8 10h-1M13 2l3 3 3-3M9 16l3 3 3-3"/>
+            </svg>
+            <span data-lang-ar="English" data-lang-en="العربية">English</span>
+        </button>
 
-    <form id="printForm">
-
-      <!-- نوع الطباعة -->
-      <div class="section">
-        <label data-lang-ar="نوع الطباعة:" data-lang-en="Print Type:">نوع الطباعة:</label>
-        <div class="radio-group">
-          <label>
-            <input type="radio" name="printType" value="ملون" />
-            <span data-lang-ar="طباعة ملونه" data-lang-en="Colored Print">طباعة ملونه</span>
-          </label>
-          <label>
-            <input type="radio" name="printType" value="أسود وأبيض" />
-            <span data-lang-ar="طباعة أسود وأبيض" data-lang-en="Black & White Print">طباعة أسود وأبيض</span>
-          </label>
+        <!-- Header -->
+        <div class="header">
+            <div class="logo">
+                <svg class="logo-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <polyline points="6,9 6,2 18,2 18,9"/>
+                    <path d="M6,18H4a2,2 0,0 1,-2,-2V11a2,2 0,0 1,2,-2H20a2,2 0,0 1,2,2v5a2,2 0,0 1,-2,2H18"/>
+                    <polygon points="6,14 8,14 8,18 6,18"/>
+                </svg>
+            </div>
+            <h1 data-lang-ar="برنت شوب" data-lang-en="Print Shop">برنت شوب</h1>
+            <div class="divider"></div>
         </div>
-      </div>
 
-      <!-- النسخ والأوراق -->
-      <div class="section">
-        <label for="copies" data-lang-ar="عدد النسخ:" data-lang-en="Copies:">عدد النسخ:</label>
-        <input type="number" id="copies" min="1" placeholder="أدخل عدد النسخ" data-placeholder-ar="أدخل عدد النسخ" data-placeholder-en="Enter number of copies">
-      </div>
-      <div class="section">
-        <label for="pages" data-lang-ar="عدد الأوراق:" data-lang-en="Pages:">عدد الأوراق:</label>
-        <input type="number" id="pages" min="1" placeholder="أدخل عدد الأوراق" data-placeholder-ar="أدخل عدد الأوراق" data-placeholder-en="Enter number of pages">
-      </div>
+        <!-- Main Form -->
+        <form id="printForm" class="form">
+            <!-- Print Type Section -->
+            <div class="section print-type-section">
+                <label class="section-label">
+                    <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <polyline points="6,9 6,2 18,2 18,9"/>
+                        <path d="M6,18H4a2,2 0,0 1,-2,-2V11a2,2 0,0 1,2,-2H20a2,2 0,0 1,2,2v5a2,2 0,0 1,-2,2H18"/>
+                        <polygon points="6,14 8,14 8,18 6,18"/>
+                    </svg>
+                    <span data-lang-ar="نوع الطباعة:" data-lang-en="Print Type:">نوع الطباعة:</span>
+                </label>
+                <div class="radio-grid">
+                    <label class="radio-card">
+                        <input type="radio" name="printType" value="ملون">
+                        <div class="radio-content color-print">
+                            <span data-lang-ar="طباعة ملونة" data-lang-en="Color Print">طباعة ملونة</span>
+                        </div>
+                    </label>
+                    <label class="radio-card">
+                        <input type="radio" name="printType" value="أسود وأبيض">
+                        <div class="radio-content bw-print">
+                            <span data-lang-ar="طباعة أسود وأبيض" data-lang-en="Black & White Print">طباعة أسود وأبيض</span>
+                        </div>
+                    </label>
+                </div>
+            </div>
 
-      <!-- نوع الورق -->
-      <div class="section">
-        <label for="paperType" data-lang-ar="نوع الورق:" data-lang-en="Paper Type:">نوع الورق:</label>
-        <select id="paperType">
-          <option value="">بدون تحديد</option>
-          <option value="A4 - 80gsm" selected>A4 - 80 جرام</option>
-          <option value="A3 - 100gsm">A3 - 100 جرام</option>
-          <option value="custom">مقاس مخصص</option>
-        </select>
-        <input type="text" id="customPaper" placeholder="أدخل المقاس المخصص" data-placeholder-ar="أدخل المقاس المخصص" data-placeholder-en="Enter custom size" style="display:none;">
-      </div>
+            <!-- Copies and Pages -->
+            <div class="grid-2">
+                <div class="section copies-section">
+                    <label class="section-label">
+                        <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M14,2H6A2,2 0,0 0,4,4V20a2,2 0,0 0,2,2H18a2,2 0,0 0,2,-2V8Z"/>
+                            <polyline points="14,2 14,8 20,8"/>
+                            <line x1="16" y1="13" x2="8" y2="13"/>
+                            <line x1="16" y1="17" x2="8" y2="17"/>
+                            <polyline points="10,9 9,9 8,9"/>
+                        </svg>
+                        <span data-lang-ar="عدد النسخ:" data-lang-en="Copies:">عدد النسخ:</span>
+                    </label>
+                    <input type="number" id="copies" min="1" value="1" class="input-field">
+                </div>
+                <div class="section pages-section">
+                    <label class="section-label">
+                        <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M14,2H6A2,2 0,0 0,4,4V20a2,2 0,0 0,2,2H18a2,2 0,0 0,2,-2V8Z"/>
+                            <polyline points="14,2 14,8 20,8"/>
+                            <line x1="16" y1="13" x2="8" y2="13"/>
+                            <line x1="16" y1="17" x2="8" y2="17"/>
+                        </svg>
+                        <span data-lang-ar="عدد الأوراق:" data-lang-en="Pages:">عدد الأوراق:</span>
+                    </label>
+                    <input type="number" id="pages" min="1" value="1" class="input-field">
+                </div>
+            </div>
 
-      <!-- عنوان التوصيل -->
-      <div class="section">
-        <label for="delivery" data-lang-ar="عنوان التوصيل:" data-lang-en="Delivery Address:">عنوان التوصيل:</label>
-        <input type="text" id="delivery" placeholder="أدخل عنوان التوصيل" data-placeholder-ar="أدخل عنوان التوصيل" data-placeholder-en="Enter delivery address">
-        <div id="distanceResult" class="delivery-estimation" style="display:none;"></div>
-      </div>
+            <!-- Paper Type -->
+            <div class="section paper-section">
+                <label class="section-label" data-lang-ar="نوع الورق:" data-lang-en="Paper Type:">نوع الورق:</label>
+                <select id="paperType" class="input-field">
+                    <option value="A4 - 80gsm">A4 - 80 جرام</option>
+                    <option value="A3 - 100gsm">A3 - 100 جرام</option>
+                    <option value="custom" data-lang-ar="مقاس مخصص" data-lang-en="Custom Size">مقاس مخصص</option>
+                </select>
+                <input type="text" id="customPaper" class="input-field custom-paper" 
+                       placeholder="أدخل المقاس المخصص" 
+                       data-placeholder-ar="أدخل المقاس المخصص" 
+                       data-placeholder-en="Enter custom size" 
+                       style="display: none;">
+            </div>
 
-      <!-- صندوق عرض التقدير -->
-      <div class="section">
-        <label data-lang-ar="التقدير المبدئي للتوصيل:" data-lang-en="Estimated Delivery Fee:">
-          التقدير المبدئي للتوصيل:
-        </label>
-        <div id="estimatedDeliveryBox" class="price-box">-</div>
-      </div>
+            <!-- Delivery Address -->
+            <div class="section delivery-section">
+                <label class="section-label">
+                    <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M21,10c0,7-9,13-9,13s-9,-6-9,-13a9,9 0,0 1,18,0Z"/>
+                        <circle cx="12" cy="10" r="3"/>
+                    </svg>
+                    <span data-lang-ar="عنوان التوصيل:" data-lang-en="Delivery Address:">عنوان التوصيل:</span>
+                </label>
+                <input type="text" id="delivery" class="input-field" 
+                       placeholder="أدخل عنوان التوصيل" 
+                       data-placeholder-ar="أدخل عنوان التوصيل" 
+                       data-placeholder-en="Enter delivery address">
+                <div id="distanceResult" class="distance-result" style="display: none;"></div>
+            </div>
 
-      <!-- وقت تجهيز الطلب -->
-      <div class="section">
-        <div id="deliveryMessage" data-lang-ar="يتم تجهيز طلبك خلال ساعتين بعد وصول رسالة تأكيد الدفع والطباعة." data-lang-en="Your order will be ready within 2 hours after payment and print confirmation.">
-          يتم تجهيز طلبك خلال ساعتين بعد وصول رسالة تأكيد الدفع والطباعة.
+            <!-- Extra Notes -->
+            <div class="section notes-section">
+                <label class="section-label" data-lang-ar="ملاحظات إضافية:" data-lang-en="Additional Notes:">ملاحظات إضافية:</label>
+                <div class="notes-grid">
+                    <label class="note-option">
+                        <input type="radio" name="extraNote" value="دباسة">
+                        <span data-lang-ar="دباسة" data-lang-en="Stapler">دباسة</span>
+                    </label>
+                    <label class="note-option">
+                        <input type="radio" name="extraNote" value="تكعيب حلزوني">
+                        <span data-lang-ar="تكعيب حلزوني" data-lang-en="Spiral Binding">تكعيب حلزوني</span>
+                    </label>
+                    <label class="note-option">
+                        <input type="radio" name="extraNote" value="تكعيب سلك">
+                        <span data-lang-ar="تكعيب سلك" data-lang-en="Wire Binding">تكعيب سلك</span>
+                    </label>
+                    <label class="note-option">
+                        <input type="radio" name="extraNote" value="طباعة وش وظهر">
+                        <span data-lang-ar="طباعة وش وظهر" data-lang-en="Double-sided print">طباعة وش وظهر</span>
+                    </label>
+                    <label class="note-option">
+                        <input type="radio" name="extraNote" value="ملاحظات أخرى">
+                        <span data-lang-ar="ملاحظات أخرى" data-lang-en="Other notes">ملاحظات أخرى</span>
+                    </label>
+                </div>
+                <textarea id="customNotes" class="input-field custom-notes" 
+                          placeholder="أدخل ملاحظاتك" 
+                          data-placeholder-ar="أدخل ملاحظاتك" 
+                          data-placeholder-en="Enter your notes" 
+                          style="display: none;"></textarea>
+            </div>
+
+            <!-- Files -->
+            <div class="section files-section">
+                <label class="section-label" data-lang-ar="الملفات:" data-lang-en="Files:">الملفات:</label>
+                <input type="file" id="files" multiple accept=".pdf,.jpg,.png,.docx" class="input-field">
+            </div>
+
+            <!-- Delivery Time -->
+            <div class="section delivery-time">
+                <div class="delivery-message" data-lang-ar="يتم تجهيز طلبك خلال ساعتين بعد وصول رسالة تأكيد الدفع والطباعة." data-lang-en="Your order will be ready within 2 hours after payment and print confirmation.">
+                    يتم تجهيز طلبك خلال ساعتين بعد وصول رسالة تأكيد الدفع والطباعة.
+                </div>
+            </div>
+        </form>
+
+        <!-- Price Summary -->
+        <div class="price-summary">
+            <div class="price-header">
+                <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <rect x="1" y="3" width="15" height="13"/>
+                    <path d="M16,6h4a2,2 0,0 1,2,2v6a2,2 0,0 1,-2,2h-4"/>
+                    <circle cx="9" cy="12" r="1"/>
+                </svg>
+                <h2 data-lang-ar="ملخص الأسعار" data-lang-en="Price Summary">ملخص الأسعار</h2>
+            </div>
+            <div class="price-grid">
+                <div class="price-item print-price">
+                    <div class="price-label" data-lang-ar="إجمالي الطباعة:" data-lang-en="Print Total:">إجمالي الطباعة:</div>
+                    <div id="printPriceBox" class="price-value">0.000 د.ك</div>
+                </div>
+                <div class="price-item delivery-price">
+                    <div class="price-label" data-lang-ar="تكلفة التوصيل:" data-lang-en="Delivery Fee:">تكلفة التوصيل:</div>
+                    <div id="deliveryPriceBox" class="price-value">0.000 د.ك</div>
+                </div>
+                <div class="price-item total-price">
+                    <div class="price-label" data-lang-ar="الإجمالي الكلي:" data-lang-en="Total Price:">الإجمالي الكلي:</div>
+                    <div id="totalPriceBox" class="price-value">0.000 د.ك</div>
+                </div>
+            </div>
         </div>
-      </div>
 
-      <!-- ملاحظات إضافية -->
-      <div class="section">
-        <label data-lang-ar="ملاحظات إضافية:" data-lang-en="Additional Notes:">ملاحظات إضافية:</label>
-        <div class="radio-group" id="extraNotesRadios">
-          <label>
-            <input type="radio" name="extraNote" value="دباسة">
-            <span data-lang-ar="دباسة" data-lang-en="Stapler">دباسة</span>
-          </label>
-          <label>
-            <input type="radio" name="extraNote" value="تكعيب حلزوني">
-            <span data-lang-ar="تكعيب حلزوني" data-lang-en="Spiral Binding">تكعيب حلزوني</span>
-          </label>
-          <label>
-            <input type="radio" name="extraNote" value="تكعيب سلك">
-            <span data-lang-ar="تكعيب سلك" data-lang-en="Wire Binding">تكعيب سلك</span>
-          </label>
-          <label>
-            <input type="radio" name="extraNote" value="طباعة وش وظهر">
-            <span data-lang-ar="طباعة وش وظهر" data-lang-en="Double-sided print">طباعة وش وظهر</span>
-          </label>
-          <label>
-            <input type="radio" name="extraNote" value="ملاحظات أخرى">
-            <span data-lang-ar="ملاحظات أخرى" data-lang-en="Other notes">ملاحظات أخرى</span>
-          </label>
+        <!-- QR Code Section -->
+        <div id="qrSection" class="qr-section" style="display: none;">
+            <div class="qr-header">
+                <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <rect x="3" y="3" width="5" height="5"/>
+                    <rect x="3" y="16" width="5" height="5"/>
+                    <rect x="16" y="3" width="5" height="5"/>
+                    <path d="M21,16h-3a2,2 0,0 0,-2,2v3"/>
+                    <path d="M21,21v.01"/>
+                    <path d="M12,7v3a2,2 0,0 1,-2,2H7"/>
+                    <path d="M3,12h.01"/>
+                    <path d="M12,3h.01"/>
+                    <path d="M12,16v.01"/>
+                    <path d="M16,12h1"/>
+                    <path d="M21,12v.01"/>
+                    <path d="M12,21v-1"/>
+                </svg>
+                <h2 data-lang-ar="كود الاستجابة السريعة:" data-lang-en="QR Code:">كود الاستجابة السريعة:</h2>
+            </div>
+            <div class="qr-container">
+                <canvas id="qrCanvas"></canvas>
+            </div>
+            <div class="qr-actions">
+                <button id="downloadQR" class="qr-btn download-btn">
+                    <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M21,15v4a2,2 0,0 1,-2,2H5a2,2 0,0 1,-2,-2V15"/>
+                        <polyline points="7,10 12,15 17,10"/>
+                        <line x1="12" y1="15" x2="12" y2="3"/>
+                    </svg>
+                    <span data-lang-ar="تحميل QR Code" data-lang-en="Download QR Code">تحميل QR Code</span>
+                </button>
+                <button id="shareQR" class="qr-btn share-btn">
+                    <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <circle cx="18" cy="5" r="3"/>
+                        <circle cx="6" cy="12" r="3"/>
+                        <circle cx="18" cy="19" r="3"/>
+                        <line x1="8.59" y1="13.51" x2="15.42" y2="17.49"/>
+                        <line x1="15.41" y1="6.51" x2="8.59" y2="10.49"/>
+                    </svg>
+                    <span data-lang-ar="مشاركة" data-lang-en="Share">مشاركة</span>
+                </button>
+            </div>
+            <p class="qr-description" data-lang-ar="امسح الكود للحصول على تفاصيل الطلب" data-lang-en="Scan to get order details">امسح الكود للحصول على تفاصيل الطلب</p>
         </div>
-      </div>
 
-      <div class="section" id="extraNotesTextareaContainer" style="display: none;">
-        <textarea id="notes" placeholder="أدخل ملاحظاتك" data-placeholder-ar="أدخل ملاحظاتك" data-placeholder-en="Enter your notes"></textarea>
-      </div>
-
-      <!-- الملفات -->
-      <div class="section">
-        <label for="files" data-lang-ar="الملفات:" data-lang-en="Files:">الملفات:</label>
-        <input type="file" id="files" multiple accept=".pdf,.jpg,.png,.docx" />
-        <div id="fileList"></div>
-      </div>
-
-      <!-- الأسعار -->
-      <div class="section">
-        <label data-lang-ar="إجمالي الطباعة:" data-lang-en="Print Total:">إجمالي الطباعة:</label>
-        <div id="printPriceBox" class="price-box">0 د.ك</div>
-      </div>
-      <div class="section">
-        <label data-lang-ar="تكلفة التوصيل:" data-lang-en="Delivery Fee:">تكلفة التوصيل:</label>
-        <div id="deliveryPriceBox" class="price-box">0 د.ك</div>
-      </div>
-      <div class="section">
-        <label data-lang-ar="الإجمالي الكلي:" data-lang-en="Total Price:">الإجمالي الكلي:</label>
-        <div id="totalPriceBox" class="price-box">0 د.ك</div>
-      </div>
-
-      <!-- QR Code Section -->
-      <div class="section" id="qrSection" style="display: none;">
-        <label data-lang-ar="كود الاستجابة السريعة (QR):" data-lang-en="QR Code:">كود الاستجابة السريعة (QR):</label>
-        <canvas id="qrCanvas"></canvas>
-      </div>
-
-      <!-- الأزرار -->
-      <div class="button-group">
-        <button type="button" id="sendBtn" data-lang-ar="إرسال عبر الواتساب" data-lang-en="Send via WhatsApp">إرسال عبر الواتساب</button>
-        <button type="button" id="unsubscribeBtn" data-lang-ar="إلغاء" data-lang-en="Cancel">إلغاء</button>
-      </div>
-    </form>
-  </div>
-
-  <div id="popup" class="popup">
-    <div class="popup-content">
-      <span id="popupMessage">تم إرسال الطلب بنجاح!</span>
-      <button id="popupClose">حسناً</button>
+        <!-- Action Buttons -->
+        <div class="action-buttons">
+            <button id="sendBtn" class="btn btn-primary">
+                <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <line x1="22" y1="2" x2="11" y2="13"/>
+                    <polygon points="22,2 15,22 11,13 2,9 22,2"/>
+                </svg>
+                <span data-lang-ar="إرسال عبر الواتساب" data-lang-en="Send via WhatsApp">إرسال عبر الواتساب</span>
+            </button>
+            <button id="cancelBtn" class="btn btn-secondary">
+                <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <line x1="18" y1="6" x2="6" y2="18"/>
+                    <line x1="6" y1="6" x2="18" y2="18"/>
+                </svg>
+                <span data-lang-ar="إلغاء" data-lang-en="Cancel">إلغاء</span>
+            </button>
+        </div>
     </div>
-  </div>
 
-  <script src="script.js"></script>
+    <!-- Success Popup -->
+    <div id="popup" class="popup" style="display: none;">
+        <div class="popup-content">
+            <div class="popup-icon">
+                <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <line x1="22" y1="2" x2="11" y2="13"/>
+                    <polygon points="22,2 15,22 11,13 2,9 22,2"/>
+                </svg>
+            </div>
+            <h3 data-lang-ar="تم إرسال الطلب بنجاح!" data-lang-en="Order sent successfully!">تم إرسال الطلب بنجاح!</h3>
+            <p data-lang-ar="سيتم التواصل معك قريباً" data-lang-en="We will contact you soon">سيتم التواصل معك قريباً</p>
+            <button id="popupClose" class="btn btn-primary" data-lang-ar="حسناً" data-lang-en="OK">حسناً</button>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
 </body>
 </html>
